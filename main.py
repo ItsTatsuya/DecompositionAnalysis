@@ -7,13 +7,14 @@ import csv
 def main():
     # Generating the matrix
     matrix_size = int(input('Enter the size of the matrix: '))
+    size = int(input('Enter the number of times you want to run the algorithms: '))
     file_name = 'asset/matrix.csv'
     generate(matrix_size, file_name)
 
     matrix = read_matrix(file_name)
     # Running the algorithms
     lu_times, qr_times, cl_times = [], [], []
-    for i in range(10):
+    for i in range(size):
         lu_times.append(LU_decomposition(matrix))
         qr_times.append(QR_decomposition(matrix))
         cl_times.append(cholesky_decomposition(matrix))
@@ -28,6 +29,6 @@ def main():
 
     # Plotting the graph
     ratio_calc()
-    
+
 if __name__ == '__main__':
     main()

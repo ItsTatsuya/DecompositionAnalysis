@@ -25,16 +25,25 @@ def ratio_calc():
     lu_times = read_results('asset/results.csv',0)
     qr_times = read_results('asset/results.csv',1)
     cl_times = read_results('asset/results.csv',2)
+
     avg_lu_time = np.mean(lu_times)
     avg_qr_time = np.mean(qr_times)
     avg_cl_time = np.mean(cl_times)
 
-    lu_ratio = round(avg_lu_time / avg_lu_time)
+    lu_ratio = 1  # LU decomposition is the reference, so its ratio is initially 1
     qr_ratio = round(avg_qr_time / avg_lu_time)
     cl_ratio = round(avg_cl_time / avg_lu_time)
 
+    # Find the common multiplier
+    common_multiplier = max(qr_ratio, cl_ratio)
+
+    # Multiply each ratio by the common multiplier
+    lu_ratio *= common_multiplier
+    qr_ratio *= common_multiplier
+    cl_ratio *= common_multiplier
+
     x = ['LU', 'QR', 'CL']
-    y = [lu_ratio, qr_ratio, cl_ratio]
+    y = [avg_cl_time, avg_qr_time, avg_cl_time]
     plot_graph(x, y, 'Comparison of Decomposition Algorithms', 'No of times run', 'time taken (nanoseconds)')
 
     print('Average time taken by LU decomposition: ', avg_lu_time,'ns')
