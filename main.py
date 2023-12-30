@@ -3,7 +3,9 @@ from src.decomposition_main import LU_decomposition, QR_decomposition, cholesky_
 from src.ratio_calc import ratio_calc, plot_graph
 
 import csv
-
+import numpy as np
+import time 
+import scipy.linalg as la
 def main():
     # Generating the matrix
     matrix_size = int(input('Enter the size of the matrix: '))
@@ -18,6 +20,23 @@ def main():
         lu_times.append(LU_decomposition(matrix))
         qr_times.append(QR_decomposition(matrix))
         cl_times.append(cholesky_decomposition(matrix))
+
+        # Using the inbuilt functions
+        '''start_time = time.time_ns()
+        P,L,U = la.lu(matrix)
+        end_time = time.time_ns()
+        lu_times.append(end_time - start_time)
+
+        start_time = time.time_ns()
+        Q,R = la.qr(matrix)
+        end_time = time.time_ns()
+        qr_times.append(end_time - start_time)
+
+        start_time = time.time_ns()
+        C,L = la.cho_factor(matrix)
+        end_time = time.time_ns()
+        cl_times.append(end_time - start_time)'''
+
 
     # Storing the results in a csv file
     with open('asset/results.csv', 'w', newline='') as csvfile:

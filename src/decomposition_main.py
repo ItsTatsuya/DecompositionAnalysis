@@ -15,7 +15,7 @@ def read_matrix(filename):
 
 def cholesky_decomposition(matrix):
     start_time = time.time_ns()
-    n = len(matrix)
+    n = matrix.shape[0]
     lower = np.zeros((n, n))
 
     for i in range(n):
@@ -34,15 +34,15 @@ def cholesky_decomposition(matrix):
 # LU Decomposition
 def LU_decomposition(matrix):
     start_time = time.time_ns()
-    m, n = matrix.shape
-    l = np.zeros((m, n))
+    n = matrix.shape[0]
+    l = np.zeros((n, n))
     u = np.zeros((n, n))
 
     for i in range(n):
         for j in range(i, n):
             u[i, j] = matrix[i, j] - np.dot(l[i, :i], u[:i, j])
 
-        for j in range(i + 1, m):
+        for j in range(i + 1, n):
             l[j, i] = (matrix[j, i] - np.dot(l[j, :i], u[:i, i])) / u[i, i]
 
     end_time = time.time_ns()
@@ -53,8 +53,8 @@ def LU_decomposition(matrix):
 # QR Decomposition
 def QR_decomposition(matrix):
     start_time = time.time_ns()
-    m, n = matrix.shape
-    q = np.zeros((m, n))
+    n = matrix.shape[0]
+    q = np.zeros((n, n))
     r = np.zeros((n, n))
 
     for i in range(n):
