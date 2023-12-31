@@ -16,11 +16,15 @@ The average time required to decompose a matrix of `size 1000` was calculated fo
 
 | Method | Average Time (ns) |
 | --- | --- |
-| LU | 1329639190.0 ns |
-| QR | 2652888460.0 ns |
-| Cholesky | 1666343100.0 ns |
+| LU | 514257380.0 ns |
+| QR | 1960309680.0 ns |
+| Cholesky | 262807270.0 ns |
 
-**`Ratio LU:QR:CL =  2 : 4 : 2`**
+**`Ratio LU:QR:CL =  2 : 7 : 1`**
+
+
+![Graph](output/graph.png)
+![Terminal](output/decompout.png)
 
 # Conclusion
 The results show that the LU decomposition method is the fastest, followed by the Cholesky decomposition method, and then the QR decomposition method. The results also show that the QR decomposition method is twice as slow as the LU and Cholesky decomposition methods.

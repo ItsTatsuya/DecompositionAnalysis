@@ -3,7 +3,7 @@
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
-
+import math
 
 def read_results(filename,row):
     with open(filename, 'r') as file:
@@ -30,24 +30,23 @@ def ratio_calc():
     avg_qr_time = np.mean(qr_times)
     avg_cl_time = np.mean(cl_times)
 
-    lu_ratio = 1  # LU decomposition is the reference, so its ratio is initially 1
-    qr_ratio = round(avg_qr_time / avg_lu_time)
-    cl_ratio = round(avg_cl_time / avg_lu_time)
+    lu_ratio = avg_lu_time / avg_cl_time
+    qr_ratio = avg_qr_time / avg_cl_time
+    cl_ratio = 1  # avg_cl_time / avg_cl_time is always 1
 
-    # Find the common multiplier
-    common_multiplier = max(qr_ratio, cl_ratio)
+    # Find the greatest common divisor (GCD) of all three ratios
+    gcd = math.gcd(math.gcd(int(lu_ratio), int(qr_ratio)), int(cl_ratio))
 
-    # Multiply each ratio by the common multiplier
-    lu_ratio *= common_multiplier
-    qr_ratio *= common_multiplier
-    cl_ratio *= common_multiplier
+    # Divide each ratio by the GCD
+    lu_ratio /= gcd
+    qr_ratio /= gcd
+    cl_ratio /= gcd
 
     x = ['LU', 'QR', 'CL']
     y = [avg_cl_time, avg_qr_time, avg_cl_time]
     plot_graph(x, y, 'Comparison of Decomposition Algorithms', 'No of times run', 'time taken (nanoseconds)')
 
-    print('Average time taken by LU decomposition: ', avg_lu_time,'ns')
-    print('Average time taken by QR decomposition: ', avg_qr_time,'ns')
-    print('Average time taken by Cholesky decomposition: ', avg_cl_time,'ns')
-
-    print('Ratio LU:QR:CL = ', lu_ratio, ':', qr_ratio, ':', cl_ratio)
+    print('Average time taken by LU decomposition: ', '{:,}'.format(avg_lu_time),'ns')
+    print('Average time taken by QR decomposition: ', '{:,}'.format(avg_qr_time),'ns')
+    print('Average time taken by Cholesky decomposition: ', '{:,}'.format(avg_cl_time),'ns')
+    print('\nRatio LU:QR:CL ≈', round(lu_ratio), ':', round(qr_ratio), ':', round(cl_ratio))
