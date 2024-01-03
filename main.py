@@ -1,32 +1,23 @@
 from src.matrix_gen import generate
-from src.decomposition_main import LU_decomposition, QR_decomposition, cholesky_decomposition, read_matrix
 from src.ratio_calc import ratio_calc
 import csv
+import subprocess
+
+cpp_file = 'src/main.cpp'
+compile_command = ['g++', cpp_file, '-o', 'output_executable']
+subprocess.run(compile_command, check=True)
 
 def main():
     # Generating the matrix
     matrix_size = int(input('Enter the size of the matrix: '))
-    size = int(input('Enter the number of times you want to run the algorithms: '))
+    size = input('Enter the number of times you want to run the algorithms: ')
     file_name = 'asset/matrix.csv'
     generate(matrix_size, file_name)
 
-    matrix = read_matrix(file_name)
-    # Running the algorithms
-    lu_times, qr_times, cl_times = [], [], []
-    for i in range(size):
-        lu_times.append(LU_decomposition(matrix))
-        qr_times.append(QR_decomposition(matrix))
-        cl_times.append(cholesky_decomposition(matrix))
-
-    # Storing the results in a csv file
-    with open('asset/results.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(lu_times)
-        writer.writerow(qr_times)
-        writer.writerow(cl_times)
-
-
-    # Plotting the graph
+    # Run the compiled executable
+    executable_command = ['./output_executable',size]
+    subprocess.run(executable_command,check=True)
+    
     ratio_calc()
 
 if __name__ == '__main__':
